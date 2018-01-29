@@ -1,0 +1,18 @@
+{
+  "name": "callbag-share",
+  "version": "1.0.0",
+  "description": "Callbag operator that broadcasts a single source to multiple sinks",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/staltz/callbag-share.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "author": "staltz.com",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "^4.8.0"
+  }
+}
