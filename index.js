@@ -4,13 +4,6 @@ const share = source => {
   return function shared(start, sink) {
     if (start !== 0) return;
     sinks.push(sink);
-    if (sinks.length === 1) {
-      source(0, (t, d) => {
-        if (t === 0) sourceTalkback = d;
-        else for (let s of sinks.slice(0)) s(t, d);
-        if (t === 2) sinks = [];
-      });
-    }
     sink(0, (t, d) => {
       if (t === 0) return;
       if (t === 2) {
@@ -21,6 +14,13 @@ const share = source => {
         sourceTalkback(t, d);
       }
     });
+    if (sinks.length === 1) {
+      source(0, (t, d) => {
+        if (t === 0) sourceTalkback = d;
+        else for (let s of sinks.slice(0)) s(t, d);
+        if (t === 2) sinks = [];
+      });
+    }
   }
 }
 
