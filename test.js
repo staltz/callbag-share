@@ -291,3 +291,48 @@ test('it disposes only when last sink sends upwards END', t => {
     t.end();
   }, 900);
 });
+
+test('it can share a sync finite listenable source', t => {
+  t.plan(10);
+  const upwardsExpected = [[0, 'function']];
+
+  const downwardsExpectedTypeA = [
+    [0, 'function'],
+    [1, 'string'],
+    [2, 'undefined'],
+  ];
+  const downwardsExpectedA = ['hi'];
+
+  function makeSource() {
+    const source = (type, data) => {
+      const e = upwardsExpected.shift();
+      t.equals(type, e[0], 'upwards type is expected: ' + e[0]);
+      t.equals(typeof data, e[1], 'upwards data is expected: ' + e[1]);
+      if (type === 0) {
+        const sink = data;
+        sink(0, source);
+	sink(1, 'hi');
+	sink(2);
+      }
+    };
+    return source;
+  }
+
+  function sinkA(type, data) {
+    const et = downwardsExpectedTypeA.shift();
+    t.equals(type, et[0], 'downwards A type is expected: ' + et[0]);
+    t.equals(typeof data, et[1], 'downwards A data type is expected: ' + et[1]);
+    if (type === 1) {
+      const e = downwardsExpectedA.shift();
+      t.equals(data, e, 'downwards A data is expected: ' + e);
+    }
+  }
+
+  const source = share(makeSource());
+  source(0, sinkA);
+
+  setTimeout(() => {
+    t.pass('nothing else happens');
+    t.end();
+  }, 700);
+});
