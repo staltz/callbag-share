@@ -311,8 +311,8 @@ test('it can share a sync finite listenable source', t => {
       if (type === 0) {
         const sink = data;
         sink(0, source);
-	sink(1, 'hi');
-	sink(2);
+        sink(1, 'hi');
+        sink(2);
       }
     };
     return source;
@@ -335,4 +335,49 @@ test('it can share a sync finite listenable source', t => {
     t.pass('nothing else happens');
     t.end();
   }, 700);
+});
+
+test('it can share for synchronously requesting sink', t => {
+  t.plan(7);
+
+  const upwardsExpectedType = [
+    [0, 'function'],
+    [1, 'undefined'],
+  ];
+
+  const downwardsExpectedType = [
+    [0, 'function'],
+  ];
+
+  function makeSource() {
+    const source = (type, data) => {
+      const et = upwardsExpectedType.shift();
+      t.equals(type, et[0], 'upwards type is expected: ' + et[0]);
+      t.equals(typeof data, et[1], 'upwards data type is expected: ' + et[1]);
+
+      if (type !== 0) return;
+      const sink = data;
+      sink(0, source);
+    };
+    return source;
+  }
+
+  function makeSink() {
+    let talkback;
+    return (type, data) => {
+      const et = downwardsExpectedType.shift();
+      t.equals(type, et[0], 'downwards type is expected: ' + et[0]);
+      t.equals(typeof data, et[1], 'downwards data type is expected: ' + et[1]);
+
+      if (type === 0) talkback = data;
+      if (type === 1 || type === 0) talkback(1);
+    };
+  }
+
+  const source = share(makeSource());
+
+  source(0, makeSink());
+
+  t.pass('did not crash');
+  t.end();
 });
