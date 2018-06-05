@@ -1,6 +1,6 @@
 # callbag-share
 
-Callbag operator that broadcasts a single source to multiple sinks. Does reference counting on sinks and starts the source when the first sink gets connected, similar to RxJS `.publish().refCount()`. Works on either pullable or listenable sources.
+Callbag operator that broadcasts a single source to multiple sinks. Does reference counting on sinks and starts the source when the first sink gets connected, similar to RxJS [`.share()`](https://www.learnrxjs.io/operators/multicasting/share.html). Works on either pullable or listenable sources.
 
 `npm install callbag-share`
 
