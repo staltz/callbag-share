@@ -30,6 +30,6 @@ const share = source => {
 
     sink(0, talkback);
   }
-}
+};
 
-module.exports = share;
+export default share;
