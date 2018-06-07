@@ -1,5 +1,5 @@
 const test = require('tape');
-const share = require('./index');
+const share = require('.');
 
 test('it shares an async finite listenable source', t => {
   t.plan(26);
