@@ -7,7 +7,6 @@ const share = source => {
     sinks.push(sink);
 
     const talkback = (t, d) => {
-      if (t === 0) return;
       if (t === 2) {
         const i = sinks.indexOf(sink);
         if (i > -1) sinks.splice(i, 1);
