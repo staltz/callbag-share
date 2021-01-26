@@ -1,6 +1,6 @@
 {
   "name": "callbag-share",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Callbag operator that broadcasts a single source to multiple sinks",
   "repository": {
     "type": "git",
